@@ -1,6 +1,7 @@
 package org.hyperledger.besu;
 
 import org.hyperledger.besu.crypto.SignatureAlgorithmFactory;
+import org.hyperledger.besu.ethereum.core.encoding.EncodingContext;
 import org.hyperledger.besu.ethereum.core.encoding.TransactionDecoder;
 
 import java.io.*;
@@ -24,7 +25,7 @@ public class TxParse {
     while(sc.hasNext()){
       try {
         var tx = Bytes.fromHexString(sc.nextLine().trim());
-        var transaction = TransactionDecoder.decodeOpaqueBytes(tx);
+        var transaction = TransactionDecoder.decodeOpaqueBytes(tx, EncodingContext.BLOCK_BODY);
 
         // https://github.com/hyperledger/besu/blob/5fe49c60b30fe2954c7967e8475c3b3e9afecf35/ethereum/core/src/main/java/org/hyperledger/besu/ethereum/mainnet/MainnetTransactionValidator.java#L252
         if (transaction.getChainId().isPresent() && !transaction.getChainId().get().equals(chainId) ){
@@ -36,8 +37,8 @@ public class TxParse {
           throw new Exception("signature s out of range");
         }
         System.out.println(transaction.getSender());
-      } catch (Exception ex) {
-        System.out.println("err: " + ex.getMessage());
+      } catch (Throwable t) {
+        System.out.println("err: " + t.getMessage());
       }
     }
   }

@@ -8,6 +8,7 @@ version '0.1-SNAPSHOT'
 repositories {
     mavenCentral()
     maven { url "https://hyperledger.jfrog.io/hyperledger/besu-maven" }
+    maven { url "https://artifacts.consensys.net/public/maven/maven/" }
 
 }
 
